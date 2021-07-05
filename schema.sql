@@ -24,19 +24,22 @@ CREATE TABLE cards
     name     TEXT      NOT NULL
 );
 
-CREATE TABLE transactions
-(
-    id               BIGSERIAL PRIMARY KEY, --ID транзакции
-    card_name        TEXT      NOT NULL REFERENCES cards ,
-    bill             BIGINT    NOT NULL,
-    transaction_type TEXT      NOT NULL,
-    owner_id         BIGINT    NOT NULL REFERENCES cards,
-    icon             BIGINT    NOT NULL,
-    status           TEXT      NOT NULL DEFAULT 'Fail' CHECK (status IN ('Fail', 'Ok')),
+CREATE TABLE icons
+
+(   pic      BYTEA     NOT NULL default 'some picture',
+    name     TEXT      NOT NULL PRIMARY KEY,
+    status   TEXT      NOT NULL DEFAULT 'Fail' CHECK (status IN ('Fail', 'Ok')),
     created  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE icons
+CREATE TABLE transactions
 (
-
+    id                 BIGSERIAL PRIMARY KEY, --ID транзакции
+    card_name          TEXT      NOT NULL,
+    bill               BIGINT    NOT NULL,
+    transaction_type   TEXT      NOT NULL,
+    owner_id           BIGINT    NOT NULL REFERENCES cards,
+    icon               TEXT      NOT NULL REFERENCES icons,
+    status             TEXT      NOT NULL DEFAULT 'Fail' CHECK (status IN ('Fail', 'Ok')),
+    created            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
