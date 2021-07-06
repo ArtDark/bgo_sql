@@ -18,7 +18,7 @@ CREATE TABLE cards
     balance  BIGINT    NOT NULL DEFAULT 0,
     issuer   TEXT      NOT NULL CHECK ( issuer IN ('Visa', 'MasterCard', 'MIR') ),
     holder   TEXT      NOT NULL,
-    owner_id BIGINT    NOT NULL REFERENCES clients,
+    owner_id BIGINT    NOT NULL REFERENCES clients(id),
     status   TEXT      NOT NULL DEFAULT 'INACTIVE' CHECK (status IN ('INACTIVE', 'ACTIVE')),
     created  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     name     TEXT      NOT NULL
@@ -38,8 +38,9 @@ CREATE TABLE transactions
     card_name          TEXT      NOT NULL,
     bill               BIGINT    NOT NULL,
     transaction_type   TEXT      NOT NULL,
-    owner_id           BIGINT    NOT NULL REFERENCES cards,
-    icon               TEXT      NOT NULL REFERENCES icons,
+    category           TEXT      NOT NULL,
+    owner_id           BIGINT    NOT NULL REFERENCES cards(id),
+    icon               TEXT      NOT NULL REFERENCES icons(name),
     status             TEXT      NOT NULL DEFAULT 'Fail' CHECK (status IN ('Fail', 'Ok')),
     created            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
